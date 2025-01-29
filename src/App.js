@@ -10,9 +10,7 @@ import pizzas from "./assets/pizza.json";
 function App() {
   return (
     <div className="wrapper">
-      <div className="block">
-        <div className="croc"></div>
-      </div>
+      <div className="block"></div>
       <Header />
       <div className="content">
         <div className="container">
@@ -24,13 +22,7 @@ function App() {
 
           <div className="content__items">
             {pizzas.map((obj, i) => (
-              <Pizzablock
-                sizes={obj.sizes}
-                pizzaName={obj.title}
-                price={obj.price}
-                key={i}
-                img={obj.imageUrl}
-              />
+              <Pizzablock {...obj} key={i} />
             ))}
           </div>
         </div>
