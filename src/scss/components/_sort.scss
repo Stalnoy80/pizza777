@@ -20,6 +20,9 @@
       cursor: pointer;
     }
   }
+  &__close {
+    display: none;
+  }
 
   &__popup {
     position: absolute;
