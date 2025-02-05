@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-const Categories = (id) => {
+const Categories = ({ category, setCategory }) => {
   const categories = [
     "Все",
     "Мясные",
@@ -9,8 +9,6 @@ const Categories = (id) => {
     "Острые",
     "Закрытые",
   ];
-
-  const [category, setCategory] = useState(0);
 
   return (
     <div className="categories">
