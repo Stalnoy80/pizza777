@@ -1,0 +1,22 @@
+.root {
+  display: flex;
+  width: 400px;
+  justify-content: space-between;
+  margin-left: 20px;
+}
+a {
+  color: #d88d57;
+  background-color: #fffffe;
+  border-radius: 30px;
+  padding: 15px 20px;
+  border: 1px solid #d88d57;
+  &:hover {
+    background-color: #f1be7c;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+    color: #ffffff;
+  }
+}
+.selected {
+  background-color: #f1be7c;
+}

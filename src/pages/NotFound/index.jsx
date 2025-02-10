@@ -3,8 +3,6 @@ import { BrowserRouter as Link } from "react-router-dom";
 import pic from "../../assets/img/empty-cart.png";
 import styles from "./NotFound.module.scss";
 
-console.log(styles);
-
 const NotFound = () => {
   return (
     <div className="wrapper">

@@ -12,8 +12,6 @@ const Sort = ({ sortActive, setSortActive }) => {
     "алфавиту-",
   ];
 
-  console.log(sortActive);
-
   return (
     <div className="sort">
       <div className="sort__label">
