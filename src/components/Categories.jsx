@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { category, setCategory } from "../redux/slices/filterSlice";
 
-const Categories = ({ category, setCategory }) => {
+const Categories = () => {
   const categories = [
     "Все",
     "Мясные",
@@ -10,13 +12,16 @@ const Categories = ({ category, setCategory }) => {
     "Закрытые",
   ];
 
+  const dispatch = useDispatch();
+  const categoryId = useSelector((state) => state.filterSlice.category);
+
   return (
     <div className="categories">
       <ul>
         {categories.map((cat, id) => (
           <li
-            onClick={() => setCategory(id)}
-            className={category === id ? "active " : ""}
+            onClick={() => dispatch(setCategory(id))}
+            className={categoryId === id ? "active " : ""}
             key={id}
           >
             {cat}
@@ -25,47 +30,5 @@ const Categories = ({ category, setCategory }) => {
       </ul>
     </div>
   );
-
-  // <div className="categories">
-  //   <ul>
-  //     <li
-  //       onClick={() => onChangeCategory(0)}
-  //       className={category === 0 ? "active " : ""}
-  //     >
-  //       Все
-  //     </li>
-  //     <li
-  //       onClick={() => onChangeCategory(1)}
-  //       className={category === 1 ? "active " : ""}
-  //     >
-  //       Мясные
-  //     </li>
-  //     <li
-  //       onClick={() => onChangeCategory(2)}
-  //       className={category === 2 ? "active " : ""}
-  //     >
-  //       Вегетарианская
-  //     </li>
-  //     <li
-  //       onClick={() => onChangeCategory(3)}
-  //       className={category === 3 ? "active " : ""}
-  //     >
-  //       Гриль
-  //     </li>
-  //     <li
-  //       onClick={() => onChangeCategory(4)}
-  //       className={category === 4 ? "active " : ""}
-  //     >
-  //       Острые
-  //     </li>
-  //     <li
-  //       onClick={() => onChangeCategory(5)}
-  //       className={category === 5 ? "active " : ""}
-  //     >
-  //       Закрытые
-  //     </li>
-  //   </ul>
-  // </div>
 };
-
 export default Categories;

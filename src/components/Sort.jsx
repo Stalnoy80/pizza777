@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
-const Sort = ({ sortActive, setSortActive }) => {
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
+const Sort = () => {
   const [open, setOpen] = useState(false);
 
   const sortList = [
@@ -11,6 +12,10 @@ const Sort = ({ sortActive, setSortActive }) => {
     "алфавиту",
     "алфавиту-",
   ];
+
+  const sort = useSelector((state) => state.filterSlice.sort);
+
+  const dispatch = useDispatch();
 
   return (
     <div className="sort">
@@ -28,17 +33,14 @@ const Sort = ({ sortActive, setSortActive }) => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{sortList[sortActive]}</span>
+        <span onClick={() => setOpen(!open)}>{sortList[sort]}</span>
       </div>
       <div className={open === true ? "sort__popup" : "sort__close"}>
         <ul>
           {sortList.map((obj, i) => (
             <li
-              onClick={() => {
-                setSortActive(i);
-                setOpen(false);
-              }}
-              className={sortActive === i ? "active" : ""}
+              onClick={() => dispatch(setSort(i)) && setOpen(false)}
+              className={sort === i ? "active" : ""}
               key={i}
             >
               {obj}
