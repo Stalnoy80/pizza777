@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   category: 0,
   sort: 0,
+  page: 0,
 };
 
 export const filterSlice = createSlice({
@@ -20,12 +21,21 @@ export const filterSlice = createSlice({
     setSort: (state, action) => {
       state.sort = action.payload;
     },
+
+    setPageCount: (state, action) => {
+      state.page = action.payload;
+    },
+
+    setFilters: (state, action) => {
+      // state.sort = action.payload.sort;
+      state.category = Number(action.payload.category);
+      state.page = Number(action.payload.page);
+    },
   },
 });
 
-// console.log(filterSlice.actions.setCategory);
-
 // Action creators are generated for each case reducer function
-export const { category, setCategory, sort, setSort } = filterSlice.actions;
+export const { setCategory, setSort, setPageCount, setFilters } =
+  filterSlice.actions;
 
 export default filterSlice.reducer;
