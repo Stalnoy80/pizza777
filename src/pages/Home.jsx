@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { AppContext } from "../App";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilters, setPageCount } from "../redux/slices/filterSlice";
@@ -13,18 +13,34 @@ import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "./Pagination";
 const Home = () => {
   const { searchValue } = useContext(AppContext);
-  const sortId = useSelector((state) => state.filterSlice.sort);
+  // const sortId = useSelector((state) => state.filterSlice.sort);
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   // const [page, setPage] = useState(1);
   // const [sortActive, setSortActive] = useState(0);
   const sortList = ["rating", "-rating", "price", "-price", "title", "-title"];
 
-  const { category, page } = useSelector((state) => state.filterSlice);
+  const { category, page, sort } = useSelector((state) => state.filterSlice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(sortList[sortId]);
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
+
+  //
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const string = qs.stringify({
+        sort,
+        category,
+        page,
+      });
+
+      navigate(`?${string}`);
+    }
+    isMounted.current = true;
+  }, [category, sort, page]);
 
   //
 
@@ -32,44 +48,43 @@ const Home = () => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
 
-      const sort = sortList[sortId];
+      dispatch(setFilters({ ...params }));
 
-      dispatch(setFilters({ ...params, sort }));
+      isSearch.current = true;
     }
   }, []);
 
   //
 
-  console.log(sortList[sortId]);
+  const sortedList = sortList[sort];
 
-  useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true);
 
     axios
       .get(
         `https://813cecfc1deed960.mokky.dev/items?${
           category ? `category=${category}` : ""
-        }&sortBy=${sortList[sortId]}&title=*${searchValue}&page=${page}&limit=4`
+        }&sortBy=${sortedList}&title=*${searchValue}&page=${page}&limit=4`
       )
       .then((res) => {
         setPizzas(res.data);
         setIsLoading(false);
       });
-
-    window.scrollTo(0, 0);
-  }, [category, sortList[sortId], searchValue, page]);
+  };
 
   //
 
   useEffect(() => {
-    const string = qs.stringify({
-      sortList,
-      category,
-      page,
-    });
+    window.scrollTo(0, 0);
 
-    navigate(`?${string}`);
-  }, [category, sortList[sortId], searchValue, page]);
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+
+    isSearch.current = false;
+  }, [category, sort, searchValue, page]);
+
   return (
     <div className="content">
       <div className="container">
