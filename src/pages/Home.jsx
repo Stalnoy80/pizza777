@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { AppContext } from "../App";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilters, setPageCount } from "../redux/slices/filterSlice";
 import axios from "axios";
 import qs from "qs";
 import { useNavigate } from "react-router";
@@ -11,16 +10,19 @@ import Sort from "../components/Sort";
 import Pizzablock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "./Pagination";
+import { setFilters, setPageCount } from "../redux/slices/filterSlice";
+import { setItems } from "../redux/slices/pizzaSlice";
 const Home = () => {
   const { searchValue } = useContext(AppContext);
   // const sortId = useSelector((state) => state.filterSlice.sort);
-  const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   // const [page, setPage] = useState(1);
   // const [sortActive, setSortActive] = useState(0);
   const sortList = ["rating", "-rating", "price", "-price", "title", "-title"];
 
   const { category, page, sort } = useSelector((state) => state.filterSlice);
+  const items = useSelector((state) => state.pizzaSlice.items);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -58,19 +60,24 @@ const Home = () => {
 
   const sortedList = sortList[sort];
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
 
-    axios
-      .get(
+    try {
+      const { data } = await axios.get(
         `https://813cecfc1deed960.mokky.dev/items?${
           category ? `category=${category}` : ""
         }&sortBy=${sortedList}&title=*${searchValue}&page=${page}&limit=4`
-      )
-      .then((res) => {
-        setPizzas(res.data);
-        setIsLoading(false);
-      });
+      );
+
+      dispatch(setItems(data.items));
+    } catch (error) {
+      alert("ошибка при получении пиццы");
+
+      console.log(error, "ошибка приложения");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   //
@@ -97,7 +104,7 @@ const Home = () => {
         <div className="content__items">
           {isLoading
             ? [...new Array(7)].map((_, i) => <Skeleton key={i} />)
-            : pizzas.items
+            : items
                 // .filter((obj) =>
                 //   obj.title.toLowerCase().includes(searchValue.toLowerCase())
                 // )

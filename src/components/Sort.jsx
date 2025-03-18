@@ -22,13 +22,16 @@ const Sort = () => {
   // console.log(popUpRef);
 
   useEffect(() => {
-    // const handleClick = (event) => {
-    document.body.addEventListener("click", (e) => {
-      if (!popUpRef.current.contains(e.target)) {
+    const handleClick = (e) => {
+      if (!e.composedPath().includes(popUpRef.current)) {
         setOpen(false);
       }
-    });
-    // };
+    };
+    document.body.addEventListener("click", handleClick);
+
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
   }, []);
 
   return (
