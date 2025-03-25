@@ -11,8 +11,6 @@ const Header = () => {
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
   const { pathname } = useLocation();
 
-  console.log(pathname);
-
   return (
     <div className="header">
       <div className="container">

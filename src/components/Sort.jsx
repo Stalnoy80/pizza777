@@ -19,8 +19,6 @@ const Sort = () => {
 
   const popUpRef = useRef();
 
-  // console.log(popUpRef);
-
   useEffect(() => {
     const handleClick = (e) => {
       if (!e.composedPath().includes(popUpRef.current)) {

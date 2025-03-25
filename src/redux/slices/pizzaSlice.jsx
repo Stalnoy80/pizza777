@@ -11,8 +11,6 @@ export const fetchPizzas = createAsyncThunk(
   async (params, thunkApi) => {
     const { category, searchValue, page, sortedList } = params;
 
-    console.log(searchValue, category, page, sortedList);
-
     const { data } = await axios.get(
       `https://813cecfc1deed960.mokky.dev/items?${
         category ? `category=${category}` : ""
