@@ -29,7 +29,6 @@ export const cartSlice = createSlice({
       const findItem = state.items.find((obj) => obj.id === action.payload.id);
       if (findItem) {
         findItem.count--;
-        console.log("message");
       }
     },
     removeItem: (state, action) => {
@@ -41,6 +40,11 @@ export const cartSlice = createSlice({
     },
   },
 });
+
+export const selectCart = (state) => state.cartSlice;
+
+export const selectCartItemById = (id) => (state) =>
+  state.cartSlice.items.find((obj) => obj.id === id);
 
 // Action creators are generated for each case reducer function
 export const { addItem, removeItem, clearItem, minusItem } = cartSlice.actions;

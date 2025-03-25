@@ -8,8 +8,11 @@ const initialState = {
 
 export const fetchPizzas = createAsyncThunk(
   "pizzaSlice/fetchPizzasStatus",
-  async (params) => {
+  async (params, thunkApi) => {
     const { category, searchValue, page, sortedList } = params;
+
+    console.log(searchValue, category, page, sortedList);
+
     const { data } = await axios.get(
       `https://813cecfc1deed960.mokky.dev/items?${
         category ? `category=${category}` : ""
@@ -17,6 +20,12 @@ export const fetchPizzas = createAsyncThunk(
     );
 
     return data;
+
+    //   if (data.length === 0) {
+    //     return thunkApi.rejectWithValue("Пусто");
+    //   }
+
+    //   return thunkApi.fulfillWithValue(data);
   }
 );
 
@@ -30,29 +39,22 @@ const pizzaSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    // Add reducers for additional action types here, and handle loading state as needed
-
     builder.addCase(fetchPizzas.pending, (state) => {
-      console.log(fetchPizzas.pending.toString());
-      // Add user to the state array
       state.status = "loading";
       state.items = [];
     });
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
-      // Add user to the state array
-      console.log(fetchPizzas.fulfilled.toString());
       state.items = action.payload.items;
       state.status = "success";
     });
     builder.addCase(fetchPizzas.rejected, (state) => {
-      console.log(fetchPizzas.rejected.toString());
-      // Add user to the state array
       state.status = "error";
       state.items = [];
     });
   },
 });
 
+export const selectPizza = (state) => state.pizzaSlice;
 // Action creators are generated for each case reducer function
 export const { setItems, extraReducers } = pizzaSlice.actions;
 
