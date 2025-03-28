@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import "./scss/app.scss";
 import EmptyCart from "./pages/EmptyCart";
-import FullPizza from "./pages/FullPizza";
+import FullPizza from "./pages/FullPizza.tsx";
 import MainLayout from "./layouts/MainLayout";
 
 function App() {
